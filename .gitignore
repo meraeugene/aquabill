@@ -1,0 +1,21 @@
+# .gitignore
+
+# Environment variables
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.sqlite3
+*.log
+
+# Virtual environment
+venv/
+env/
+
+# Static and media
+staticfiles/
+media/
+
+# VSCode or other IDE settings
+.vscode/

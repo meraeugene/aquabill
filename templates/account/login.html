@@ -1,0 +1,119 @@
+{% extends "base_login.html" %} {% load static %} {% block content %}
+
+<style>
+  .wave {
+    animation: wave 1.5s infinite ease-in-out;
+    background: linear-gradient(135deg, #3b82f6 30%, #60a5fa 70%);
+  }
+
+  @keyframes wave {
+    0% {
+      transform: translateY(100%);
+    }
+    50% {
+      transform: translateY(50%);
+    }
+    100% {
+      transform: translateY(100%);
+    }
+  }
+
+  #login-btn.loading .wave {
+    display: block;
+  }
+
+  #login-btn.loading {
+    pointer-events: none;
+    opacity: 0.9;
+  }
+</style>
+
+<div class="w-full flex flex-col items-center gap-1">
+  <img src="{% static 'images/aquabill-logo.png' %}" alt="Logo" class="h-28" />
+
+  <div
+    class="mx-auto py-8 px-12 rounded-lg bg-blue-900 text-white shadow-lg"
+    style="width: 25%"
+  >
+    <div class="mb-8 space-y-2">
+      <h2 class="text-3xl font-bold text-center">Sign in to Aquabill</h2>
+      <p class="text-center">Stay connected with your water usage and bills.</p>
+    </div>
+
+    <!-- Display any error or info messages here -->
+    {% if messages %}
+    <div class="mb-4">
+      {% for message in messages %} {% if message.tags == 'error' %}
+      <div class="bg-red-500 text-white p-4 rounded-md">
+        <p>{{ message }}</p>
+      </div>
+      {% elif message.tags == 'success' %}
+      <div class="bg-green-500 text-white p-4 rounded-md">
+        <p>{{ message }}</p>
+      </div>
+      {% elif message.tags == 'info' %}
+      <div class="bg-blue-500 text-white p-4 rounded-md">
+        <p>{{ message }}</p>
+      </div>
+      {% endif %} {% endfor %}
+    </div>
+    {% endif %}
+
+    <form method="POST" action="{% url 'account_login' %}">
+      {% csrf_token %}
+      <!-- Email -->
+      <label for="id_email" class="block font-semibold mb-2"
+        >Email Address</label
+      >
+      <input
+        type="text"
+        name="email"
+        id="id_email"
+        placeholder="example@gmail.com"
+        class="p-3 border rounded-md text-black focus:outline-none focus:ring-2 focus:ring-blue-400 w-full mb-4"
+      />
+
+      <!-- Password -->
+      <label for="id_password" class="block font-semibold mb-2">Password</label>
+      <input
+        type="password"
+        name="password"
+        id="id_password"
+        class="p-3 border text-black rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 w-full mb-6"
+      />
+
+      <button
+        id="login-btn"
+        type="submit"
+        class="relative overflow-hidden w-full mb-4 bg-white font-bold text-blue-600 py-3 rounded-lg transition-all duration-300 hover:bg-blue-600 hover:text-white"
+      >
+        <span id="button-text" class="relative z-10">Sign in</span>
+        <span
+          class="absolute inset-0 z-0 bg-blue-400 opacity-30 wave hidden"
+        ></span>
+      </button>
+    </form>
+
+    <div class="text-center mt-4 border-t border-gray-400 pt-4">
+      <a
+        href="{% url 'account_signup' %}"
+        class="text-sm font-semibold hover:text-blue-300 hover:underline"
+        >Create an account</a
+      >
+    </div>
+  </div>
+</div>
+
+<script>
+  const form = document.querySelector("form");
+  const loginBtn = document.getElementById("login-btn");
+  const buttonText = document.getElementById("button-text");
+
+  form.addEventListener("submit", function () {
+    loginBtn.classList.add("loading");
+    loginBtn.querySelector(".wave").classList.remove("hidden");
+    buttonText.textContent = "Signing in..."; // Change button text to "Signing in..."
+  });
+</script>
+
+{% endblock %}

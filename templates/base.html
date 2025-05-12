@@ -1,0 +1,89 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Aquabill | Water Billing System</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="icon"
+      href="{% static 'images/favicon.ico' %}"
+      type="image/x-icon"
+    />
+    <link rel="manifest" href="{% url 'manifest' %}" />
+    <script src="{% static 'js/serviceworker.js' %}"></script>
+    <script>
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker
+          .register("{% static 'js/serviceworker.js' %}")
+          .then(function () {
+            console.log("Service Worker Registered");
+          });
+      }
+    </script>
+    <style>
+      body.custom-bg {
+        background-image: url("{% static 'images/water-drop.png' %}");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+      }
+    </style>
+  </head>
+  <body class="flex h-screen bg-gray-100 text-gray-800 custom-bg">
+    <aside class="w-64 bg-blue-900 text-white flex flex-col p-6 space-y-2">
+      <h1 class="text-2xl font-bold mb-6 text-white">💧 Aquabill</h1>
+      <nav class="flex flex-col space-y-2">
+        <a
+          href="{% url 'dashboard' %}"
+          class="px-4 py-2 rounded-lg transition-all duration-300 transform flex items-center gap-2 {% if request.resolver_match.url_name == 'dashboard' %} bg-blue-100 text-blue-800 shadow-inner border-l-4 border-blue-400 {% else %} hover:bg-blue-100 hover:text-blue-800 hover:shadow-inner hover:border-l-4 hover:border-blue-400 hover:pl-5 hover:scale-[1.03] hover:shadow-blue-300 {% endif %}"
+        >
+          🏠 Dashboard
+        </a>
+
+        <a
+          href="{% url 'bills' %}"
+          class="px-4 py-2 rounded-lg transition-all duration-300 transform flex items-center gap-2 {% if request.resolver_match.url_name == 'bills' %} bg-blue-100 text-blue-800 shadow-inner border-l-4 border-blue-400 {% else %} hover:bg-blue-100 hover:text-blue-800 hover:shadow-inner hover:border-l-4 hover:border-blue-400 hover:pl-5 hover:shadow-blue-300 {% endif %}"
+        >
+          📄 Bills
+        </a>
+
+        <a
+          href="{% url 'usage' %}"
+          class="px-4 py-2 rounded-lg transition-all duration-300 transform flex items-center gap-2 {% if request.resolver_match.url_name == 'usage' %} bg-blue-100 text-blue-800 shadow-inner border-l-4 border-blue-400 {% else %} hover:bg-blue-100 hover:text-blue-800 hover:shadow-inner hover:border-l-4 hover:border-blue-400 hover:pl-5 hover:shadow-blue-300 {% endif %}"
+        >
+          📊 Usage
+        </a>
+
+        <a
+          href="{% url 'payments' %}"
+          class="px-4 py-2 rounded-lg transition-all duration-300 transform flex items-center gap-2 {% if request.resolver_match.url_name == 'payments' %} bg-blue-100 text-blue-800 font shadow-inner border-l-4 border-blue-400 {% else %} hover:bg-blue-100 hover:text-blue-800 hover:shadow-inner hover:border-l-4 hover:border-blue-400 hover:pl-5 hover:shadow-blue-300 {% endif %}"
+        >
+          💳 Payments
+        </a>
+
+        <a
+          href="{% url 'settings' %}"
+          class="px-4 py-2 rounded-lg transition-all duration-300 transform flex items-center gap-2 {% if request.resolver_match.url_name == 'settings' %} bg-blue-100 text-blue-800 font-semibold shadow-inner border-l-4 border-blue-400 {% else %} hover:bg-blue-100 hover:text-blue-800 hover:shadow-inner hover:border-l-4 hover:border-blue-400 hover:pl-5 hover:shadow-blue-300 {% endif %}"
+        >
+          ⚙️ Settings
+        </a>
+
+        <a
+          href="{% url 'logout' %}"
+          class="px-4 py-2 rounded-lg transition-all duration-300 transform flex items-center gap-2 text-white cursor-pointer shadow-inner hover:bg-blue-100 hover:text-blue-800 hover:shadow-inner hover:border-l-4 hover:border-blue-400 hover:pl-5 hover:shadow-blue-300"
+        >
+          🚪 Logout
+        </a>
+      </nav>
+    </aside>
+
+    <main class="flex-1 p-6 overflow-y-auto">
+      {% block content %} {% endblock %}
+    </main>
+  </body>
+</html>

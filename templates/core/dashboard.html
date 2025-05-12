@@ -1,0 +1,74 @@
+{% extends "base.html" %} {% block content %}
+<div>
+  <h2 class="text-2xl font-semibold text-blue-800 mb-6">Dashboard</h2>
+
+  <div class="flex items-start gap-8">
+    <div
+      class="w-full bg-white shadow-lg rounded-lg p-6 border-l-4 border-blue-500"
+    >
+      <div class="flex items-center gap-8">
+        <h3 class="text-lg font-semibold text-gray-700">💧 Total Bill</h3>
+        <p class="text-3xl font-bold text-blue-600">
+          ${{ total_bill|floatformat:2 }}
+        </p>
+      </div>
+
+      <div class="flex items-center gap-8 mt-4">
+        <h3 class="text-lg font-semibold text-gray-700">📅 Due Date</h3>
+        <p class="text-xl text-red-500">{{ due_date|date:"F d, Y" }}</p>
+      </div>
+
+      <button class="mt-8 text-center">
+        <a
+          href="{% url 'payments' %}"
+          class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg shadow transition"
+          >💳 Proceed to Payment</a
+        >
+      </button>
+    </div>
+
+    <!-- Usage Chart Card -->
+    <div
+      class="w-full bg-white shadow-lg rounded-lg p-6 border-l-4 border-green-500"
+    >
+      <h3 class="text-lg font-semibold text-gray-700 mb-4">
+        📈 Monthly Usage (Liters)
+      </h3>
+      <canvas id="usageChart" width="400" height="300"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- Pass the context data safely as JSON -->
+<script>
+  const usageLabels = JSON.parse("{{ usage_labels_json|escapejs }}");
+  const usageValues = JSON.parse("{{ usage_values_json|escapejs }}");
+
+  const ctx = document.getElementById("usageChart").getContext("2d");
+  new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: usageLabels,
+      datasets: [
+        {
+          label: "Liters Used",
+          data: usageValues,
+          backgroundColor: "rgba(59, 130, 246, 0.6)",
+          borderColor: "rgba(59, 130, 246, 1)",
+          borderWidth: 1,
+          borderRadius: 4,
+        },
+      ],
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: { stepSize: 50 },
+        },
+      },
+    },
+  });
+</script>
+
+{% endblock %}

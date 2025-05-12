@@ -1,0 +1,182 @@
+{% extends "base_signup.html" %} {% load static %} {% block content %}
+<style>
+  .wave {
+    animation: wave 1.5s infinite ease-in-out;
+    background: linear-gradient(135deg, #3b82f6 30%, #60a5fa 70%);
+  }
+
+  @keyframes wave {
+    0% {
+      transform: translateY(100%);
+    }
+    50% {
+      transform: translateY(50%);
+    }
+    100% {
+      transform: translateY(100%);
+    }
+  }
+
+  #signup-btn.loading .wave {
+    display: block;
+  }
+
+  #signup-btn.loading {
+    pointer-events: none;
+    opacity: 0.9;
+  }
+</style>
+
+<div class="w-full flex flex-col items-center gap-1 h-auto">
+  <img src="{% static 'images/aquabill-logo.png' %}" alt="Logo" class="h-28" />
+
+  <div
+    class="mx-auto py-8 px-12 rounded-lg text-white shadow-lg bg-blue-900"
+    style="width: 33%"
+  >
+    <div class="mb-8 space-y-2">
+      <h2 class="text-3xl font-bold text-center">Create an Account</h2>
+      <p class="text-center">
+        Join Aquabill to track your water usage and bills.
+      </p>
+    </div>
+
+    <form method="POST" id="signup-form" action="{% url 'account_signup' %}">
+      {% csrf_token %}
+
+      <!-- First and Last Name -->
+      <div class="flex items-center gap-4">
+        <div class="w-full">
+          <label for="id_first_name" class="block font-semibold mb-2">
+            First Name {% if form.first_name.errors %}
+            <span class="text-red-300 text-sm ml-2">
+              *{{ form.first_name.errors.0 }}
+            </span>
+            {% endif %}
+          </label>
+          <input
+            type="text"
+            name="first_name"
+            id="id_first_name"
+            value="{{ form.first_name.value|default:'' }}"
+            class="p-3 border rounded-md text-black w-full mb-4"
+          />
+        </div>
+
+        <div class="w-full">
+          <label for="id_last_name" class="block font-semibold mb-2">
+            Last Name {% if form.last_name.errors %}
+            <span class="text-red-300 text-sm ml-2">
+              *{{ form.last_name.errors.0 }}
+            </span>
+            {% endif %}
+          </label>
+          <input
+            type="text"
+            name="last_name"
+            id="id_last_name"
+            value="{{ form.last_name.value|default:'' }}"
+            class="p-3 border rounded-md text-black w-full mb-4"
+          />
+        </div>
+      </div>
+
+      <!-- Phone -->
+      <label for="id_phone" class="block font-semibold mb-2">
+        Phone Number {% if form.phone.errors %}
+        <span class="text-red-300 text-sm ml-2">
+          *{{ form.phone.errors.0 }}
+        </span>
+        {% endif %}
+      </label>
+      <input
+        type="tel"
+        name="phone"
+        id="id_phone"
+        value="{{ form.phone.value|default:'' }}"
+        class="p-3 border rounded-md text-black w-full mb-4"
+      />
+
+      <!-- Email -->
+      <label for="id_email" class="block font-semibold mb-2">
+        Email {% if form.email.errors %}
+        <span class="text-red-300 text-sm ml-2">
+          *{{ form.email.errors.0 }}
+        </span>
+        {% endif %}
+      </label>
+      <input
+        type="email"
+        name="email"
+        id="id_email"
+        value="{{ form.email.value|default:'' }}"
+        class="p-3 border rounded-md text-black w-full mb-4"
+      />
+
+      <!-- Password -->
+      <label for="id_password1" class="block font-semibold mb-2">
+        Password {% if form.password1.errors %}
+        <span class="text-red-300 text-sm ml-2">
+          *{{ form.password1.errors.0 }}
+        </span>
+        {% endif %}
+      </label>
+      <input
+        type="password"
+        name="password1"
+        id="id_password1"
+        autocomplete="new-password"
+        class="p-3 border rounded-md text-black w-full mb-4"
+      />
+
+      <!-- Confirm Password -->
+      <label for="id_password2" class="block font-semibold mb-2">
+        Confirm Password {% if form.password2.errors %}
+        <span class="text-red-300 text-sm ml-2">
+          *{{ form.password2.errors.0 }}
+        </span>
+        {% endif %}
+      </label>
+      <input
+        type="password"
+        name="password2"
+        id="id_password2"
+        autocomplete="new-password"
+        class="p-3 border rounded-md text-black w-full mb-6"
+      />
+
+      <button
+        id="signup-btn"
+        type="submit"
+        class="relative overflow-hidden w-full bg-white font-bold text-blue-600 py-3 rounded-lg mb-4 transition-all duration-300 hover:bg-blue-600 hover:text-white"
+      >
+        <span id="button-text" class="relative z-10">Create Account</span>
+        <span
+          class="absolute inset-0 z-0 bg-blue-400 opacity-30 wave hidden"
+        ></span>
+      </button>
+    </form>
+
+    <div class="text-center mt-4 border-t border-gray-400 pt-4">
+      <a
+        href="{% url 'account_login' %}"
+        class="text-sm font-semibold hover:text-blue-300 hover:underline"
+        >Already have an account? Sign in</a
+      >
+    </div>
+  </div>
+</div>
+
+<script>
+  const signupForm = document.getElementById("signup-form");
+  const signupBtn = document.getElementById("signup-btn");
+  const buttonText = document.getElementById("button-text");
+
+  signupForm.addEventListener("submit", function () {
+    signupBtn.classList.add("loading");
+    signupBtn.querySelector(".wave").classList.remove("hidden");
+    buttonText.textContent = "Creating Account..."; // Change button text to "Signing up..."
+  });
+</script>
+
+{% endblock %}

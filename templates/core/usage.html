@@ -1,0 +1,63 @@
+{% extends "base.html" %} {% block content %}
+<h2 class="text-2xl font-semibold text-blue-800 mb-6">Usage Statistics</h2>
+
+<div class="flex items-start gap-8">
+  <!-- Left: Stats -->
+  <div
+    class="w-full md:w-1/2 bg-white shadow-lg rounded-lg p-6 border-l-4 border-blue-500"
+  >
+    <p class="text-lg font-bold">
+      Total Consumption: {{ total_consumption|floatformat:0 }}L
+    </p>
+    <p class="text-sm text-gray-500 mt-2">
+      Average Daily Usage: {{ average_daily_usage|floatformat:0 }}L
+    </p>
+    <p class="text-sm text-gray-500 mt-1">
+      Average Monthly Usage: {{ average_monthly_usage|floatformat:0 }}L
+    </p>
+  </div>
+
+  <!-- Right: Chart -->
+  <div
+    class="w-full md:w-1/2 bg-white shadow-lg rounded-lg p-6 border-l-4 border-green-500"
+  >
+    <h3 class="font-semibold text-lg mb-4">📈 Monthly Usage (Liters)</h3>
+    <canvas id="usageChart" class="w-full h-64"></canvas>
+  </div>
+</div>
+
+<script>
+  const usageLabels = JSON.parse("{{ usage_labels_json|escapejs }}");
+  const usageValues = JSON.parse("{{ usage_values_json|escapejs }}");
+
+  const ctx = document.getElementById("usageChart").getContext("2d");
+  new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: usageLabels,
+      datasets: [
+        {
+          label: "Liters Used",
+          data: usageValues,
+          backgroundColor: "rgba(59, 130, 246, 0.6)",
+          borderColor: "rgba(59, 130, 246, 1)",
+          borderWidth: 1,
+          borderRadius: 4,
+        },
+      ],
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: { stepSize: 50 },
+        },
+      },
+    },
+  });
+</script>
+
+<script id="usageData" type="application/json">
+  {{ usage_data|json_script:"usageData" }}
+</script>
+{% endblock %}
