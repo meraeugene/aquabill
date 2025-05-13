@@ -1,0 +1,56 @@
+{% extends "base.html" %} {% block content %}
+<div class="mt-14 lg:mt-0 bg-blue-50 lg:p-8 p-6 min-h-screen">
+  <button
+    onclick="history.back()"
+    class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-8 rounded-lg block"
+  >
+    Back
+  </button>
+  <div class="flex flex-col items-center justify-center gap-4">
+    <h2 class="text-2xl font-extrabold text-blue-900 mt-8">E-Wallet Payment</h2>
+    <p class="text-gray-700 mb-4 text-center">
+      Scan the QR code below to pay using your e-wallet.
+    </p>
+
+    <img
+      src="https://res.cloudinary.com/dupynxkci/image/upload/v1747144306/aquabill/tq1kepzwt8cdnrki6ika.webp"
+      alt="QR Code"
+      class="mx-auto mb-6"
+    />
+  </div>
+
+  <!-- Success Message -->
+  {% if messages %}
+  <div class="bg-green-100 text-green-700 p-4 mb-4 rounded-lg mx-auto w-1/4">
+    {% for message in messages %}
+    <p>{{ message }}</p>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <form
+    method="POST"
+    enctype="multipart/form-data"
+    class="bg-white rounded-lg shadow p-6 max-w-md mx-auto"
+  >
+    {% csrf_token %}
+    <div class="mb-4">
+      <label class="block font-medium mb-2">Upload Receipt:</label>
+      <input
+        type="file"
+        name="receipt"
+        accept="image/*"
+        required
+        class="block w-full border p-2 rounded"
+      />
+    </div>
+    <button
+      type="submit"
+      class="bg-blue-600 w-full hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-lg"
+    >
+      Submit Receipt
+    </button>
+  </form>
+</div>
+
+{% endblock %}

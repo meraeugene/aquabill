@@ -5,11 +5,11 @@ from django.conf.urls.static import static
 from django.shortcuts import redirect
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('superadmin/', admin.site.urls),
     # Redirect the homepage to the login page
     path('', lambda request: redirect('/accounts/login/', permanent=False)),
     path('accounts/', include('allauth.urls')),
-    path('core/', include('core.urls')),  # Ensure core urls are prefixed to avoid conflict
+    path('', include('core.urls')),  # Ensure core urls are prefixed to avoid conflict
     path('pwa/', include('pwa.urls')),  # Same for pwa to avoid conflict
 ]
 

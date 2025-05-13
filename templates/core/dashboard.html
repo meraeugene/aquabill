@@ -1,23 +1,37 @@
-{% extends "base.html" %} {% block content %}
-<div class="mt-14 lg:mt-0">
-  <h2 class="text-2xl font-bold text-blue-800 mb-6">Dashboard</h2>
+{% extends "base.html" %}{% load humanize %} {% block content %}
+
+<div class="mt-14 lg:mt-0 bg-blue-50 lg:p-8 p-6 min-h-screen">
+  <h2 class="text-3xl font-extrabold text-blue-900 mb-8">Dashboard</h2>
 
   <div class="flex flex-col lg:flex-row items-start gap-8">
+    <!-- Total Bill Card -->
     <div
-      class="w-full bg-white shadow-lg rounded-lg p-6 border-l-4 border-blue-500"
+      class="w-full flex-col bg-white shadow-lg rounded-lg p-6 border-l-4 border-blue-500"
     >
       <div class="flex items-center gap-8">
-        <h3 class="text-lg font-semibold text-gray-700">💧 Total Bill</h3>
-        <p class="text-3xl font-bold text-blue-600">
-          ${{ total_bill|floatformat:2 }}
+        <h3 class="text-lg font-semibold text-gray-700">Total Bill</h3>
+        <p class="text-xl lg:text-3xl font-bold text-blue-600">
+          {% if latest_bill %} ₱{{ latest_bill.amount|floatformat:2|intcomma }}
+          {% else%} No bill yet {% endif %}
         </p>
       </div>
 
       <div class="flex items-center gap-8 mt-4">
-        <h3 class="text-lg font-semibold text-gray-700">📅 Due Date</h3>
-        <p class="text-xl text-red-500">{{ due_date|date:"F d, Y" }}</p>
+        <h3 class="text-lg font-semibold text-gray-700">Due Date</h3>
+        <p class="text-xl text-red-500">
+          {%if latest_bill %} {{ latest_bill.due_date|date:"F d, Y" }} {% else%}
+          No bill yet {% endif %}
+        </p>
       </div>
 
+      <div class="flex items-center gap-8 mt-4">
+        <h3 class="text-lg font-semibold text-gray-700">Status</h3>
+        <p class="px-6 uppercase text-xl font-medium">
+          {{ latest_bill.status }}
+        </p>
+      </div>
+
+      {% if latest_bill and latest_bill.status == 'unpaid' %}
       <button class="mt-8 text-center">
         <a
           href="{% url 'payments' %}"
@@ -25,6 +39,7 @@
           >💳 Proceed to Payment</a
         >
       </button>
+      {% endif %}
     </div>
 
     <!-- Usage Chart Card -->
@@ -32,14 +47,14 @@
       class="w-full bg-white shadow-lg rounded-lg p-6 border-l-4 border-green-500"
     >
       <h3 class="text-lg font-semibold text-gray-700 mb-4">
-        📈 Monthly Usage (Liters)
+        Monthly Usage (Liters)
       </h3>
       <canvas id="usageChart" width="400" height="300"></canvas>
     </div>
   </div>
 </div>
 
-<!-- Pass the context data safely as JSON -->
+<!-- Chart.js Script -->
 <script>
   const usageLabels = JSON.parse("{{ usage_labels_json|escapejs }}");
   const usageValues = JSON.parse("{{ usage_values_json|escapejs }}");

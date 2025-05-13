@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
+from cloudinary.models import CloudinaryField
+
 
 # User profile
 class Profile(models.Model):
@@ -15,8 +17,15 @@ class Bill(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     period = models.CharField(max_length=20)  # e.g., 'April 2025'
     amount = models.DecimalField(max_digits=10, decimal_places=2)  # Amount in dollars
-    status = models.CharField(max_length=10, choices=[('paid', 'Paid'), ('unpaid', 'Unpaid')], default='unpaid')
+    status = models.CharField(
+    max_length=10, 
+    choices=[('unpaid', 'Unpaid'), ('pending', 'Pending'), ('paid', 'Paid')],
+    default='unpaid'
+    )
     due_date = models.DateField()
+    consumption_m3 = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    rate_per_m3 = models.DecimalField(max_digits=6, decimal_places=2, default=30.00)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"Bill for {self.period} - {self.status}"
@@ -37,6 +46,7 @@ class Payment(models.Model):
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     payment_method = models.CharField(max_length=50)
     timestamp = models.DateTimeField(auto_now_add=True)
+    receipt = CloudinaryField('receipt', blank=True, null=True)
 
     def __str__(self):
         return f"{self.user.email} - {self.amount} via {self.payment_method}"

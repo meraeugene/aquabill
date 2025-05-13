@@ -1,29 +1,42 @@
-{% extends "base.html" %} {% block content %}
-<div class="max-w-2xl mt-14 lg:mt-0">
-  <h2 class="text-2xl font-bold text-blue-800 mb-6">Payment Details</h2>
+{% extends "base.html" %}{% load humanize %} {% block content %}
+<div class="mt-14 lg:mt-0 bg-blue-50 min-h-screen">
+  <div class="max-w-2xl lg:p-8 p-6">
+    <h2 class="text-2xl lg:text-3xl font-extrabold text-blue-900 mb-6">
+      Payment Details
+    </h2>
 
-  <div
-    class="w-full bg-white shadow-lg rounded-lg p-6 border-l-4 border-blue-500"
-  >
-    <div class="flex items-center gap-8">
-      <h3 class="text-lg font-semibold text-gray-700">💧 Total Bill</h3>
-      <p class="text-3xl font-bold text-blue-600">
-        ${{ total_bill|floatformat:2 }}
-      </p>
+    <div
+      class="w-full bg-white shadow-lg rounded-lg p-6 border-l-4 border-blue-500"
+    >
+      <div class="flex flex-col gap-8">
+        <div class="flex-1">
+          <h3 class="text-lg font-semibold text-gray-700">Total Bill</h3>
+          <p class="text-3xl font-bold text-blue-600">
+            ₱{{ total_bill|floatformat:2|intcomma }}
+          </p>
+        </div>
+
+        <div class="flex-1">
+          <h3 class="text-lg font-semibold text-gray-700">Due Date</h3>
+          <p class="text-xl text-red-500">{{ due_date }}</p>
+        </div>
+
+        <div class="flex-1">
+          <h3 class="text-lg font-semibold text-gray-700">Status</h3>
+          <p class="text-xl uppercase">{{ latest_bill.status }}</p>
+        </div>
+      </div>
+
+      {% if latest_bill and latest_bill.status == 'unpaid' %}
+      <button class="mt-8 text-center">
+        <a
+          href="{% url 'payment_method_selection' %}"
+          class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg shadow transition"
+          >💳 Pay Now</a
+        >
+      </button>
+      {% endif %}
     </div>
-
-    <div class="flex items-center gap-8 mt-4">
-      <h3 class="text-lg font-semibold text-gray-700">📅 Due Date</h3>
-      <p class="text-xl text-red-500">{{ due_date }}</p>
-    </div>
-
-    <button class="mt-8 text-center">
-      <a
-        href="{% url 'payment_method_selection' %}"
-        class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg shadow transition"
-        >💳 Pay Now</a
-      >
-    </button>
   </div>
 </div>
 {% endblock %}

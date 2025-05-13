@@ -1,6 +1,8 @@
 {% extends "base.html" %} {% block content %}
-<div class="mt-14 lg:mt-0">
-  <h2 class="text-2xl font-bold text-blue-800 mb-6">Usage Statistics</h2>
+<div class="mt-14 lg:mt-0 bg-blue-50 p-6 lg:p-8 min-h-screen">
+  <h2 class="text-3xl font-extrabold text-blue-900 mb-8">
+    Usage Statistics Per Month
+  </h2>
 
   <div class="flex flex-col lg:flex-row items-start gap-8">
     <!-- Left: Stats -->
@@ -11,10 +13,10 @@
         Total Consumption: {{ total_consumption|floatformat:0 }}L
       </p>
       <p class="text-sm text-gray-500 mt-2">
-        Average Daily Usage: {{ average_daily_usage|floatformat:0 }}L
+        Average Daily Usage: {{ average_daily_usage }}L
       </p>
       <p class="text-sm text-gray-500 mt-1">
-        Average Monthly Usage: {{ average_monthly_usage|floatformat:0 }}L
+        Average Monthly Usage: {{ average_monthly_usage }}L
       </p>
     </div>
 
@@ -22,7 +24,7 @@
     <div
       class="w-full md:w-1/2 bg-white shadow-lg rounded-lg p-6 border-l-4 border-green-500"
     >
-      <h3 class="font-semibold text-lg mb-4">📈 Monthly Usage (Liters)</h3>
+      <h3 class="font-semibold text-lg mb-4">Monthly Usage (Liters)</h3>
       <canvas id="usageChart" class="w-full h-64"></canvas>
     </div>
   </div>

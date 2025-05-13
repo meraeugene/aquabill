@@ -1,0 +1,100 @@
+{% extends "base_admin.html" %} {% block content %}
+
+<div class="min-h-screen flex items-center justify-center lg:bg-blue-50">
+  <div
+    class="w-full lg:max-w-xl bg-white shadow-lg rounded-lg p-8 border border-blue-200"
+  >
+    <h2 class="text-3xl font-extrabold text-blue-900 mb-6 text-center">
+      Billing Management
+    </h2>
+    <p class="text-blue-700 text-center mb-8">
+      Enter the current water reading to generate a new bill for a user.
+    </p>
+
+    <!-- Display any error or info messages here -->
+    {% if messages %}
+    <div class="mb-4">
+      {% for message in messages %} {% if message.tags == 'error' %}
+      <div class="bg-red-500 text-white p-4 rounded-md">
+        <p>{{ message }}</p>
+      </div>
+      {% elif message.tags == 'success' %}
+      <div class="bg-green-500 text-white p-4 rounded-md">
+        <p>{{ message }}</p>
+      </div>
+      {% elif message.tags == 'info' %}
+      <div class="bg-blue-500 text-white p-4 rounded-md">
+        <p>{{ message }}</p>
+      </div>
+      {% endif %} {% endfor %}
+    </div>
+    {% endif %}
+
+    <form method="POST" class="space-y-6">
+      {% csrf_token %}
+
+      <!-- Select User -->
+      <div>
+        <label for="user_id" class="block text-sm font-medium text-blue-800"
+          >Select User</label
+        >
+        <select
+          name="user_id"
+          id="user_id"
+          class="mt-1 block w-full px-4 py-2 border border-blue-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-500"
+          required
+        >
+          <option disabled selected>-- Choose a user --</option>
+          {% for user in users %}
+          <option value="{{ user.id }}">{{ user.username }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- Display Previous Reading -->
+      {% if previous_reading is not None %}
+      <div>
+        <label class="block text-sm font-medium text-blue-800"
+          >Previous Reading (m³)</label
+        >
+        <input
+          type="text"
+          value="{{ previous_reading }}"
+          class="mt-1 block w-full px-4 py-2 border border-blue-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-500"
+          disabled
+        />
+      </div>
+      {% endif %}
+
+      <!-- Current Reading -->
+      <div>
+        <label
+          for="current_reading"
+          class="block text-sm font-medium text-blue-800"
+          >Current Reading (m³)</label
+        >
+        <input
+          type="number"
+          step="0.01"
+          name="current_reading"
+          id="current_reading"
+          placeholder="Enter current meter reading"
+          class="mt-1 block w-full px-4 py-2 border border-blue-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-500"
+          required
+        />
+      </div>
+
+      <!-- Submit Button -->
+      <div class="text-center">
+        <button
+          type="submit"
+          class="bg-blue-600 text-white font-semibold py-2 px-6 rounded-lg hover:bg-blue-700 transition duration-200 shadow-md"
+        >
+          Generate Bill
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

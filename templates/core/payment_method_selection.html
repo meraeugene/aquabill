@@ -1,6 +1,15 @@
 {% extends "base.html" %} {% block content %}
-<div class="mt-14 lg:mt-0">
-  <h2 class="text-2xl font-bold text-blue-800 mb-8">Select Payment Method</h2>
+<div class="mt-14 lg:mt-0 bg-blue-50 p-8 min-h-screen">
+  <button
+    onclick="history.back()"
+    class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-8 rounded-lg block"
+  >
+    Back
+  </button>
+
+  <h2 class="text-2xl font-extrabold text-blue-900 my-8">
+    Select Payment Method
+  </h2>
 
   <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
     <!-- Online Banking -->
@@ -12,22 +21,22 @@
       </h3>
       <p class="text-gray-600 mb-4">Pay directly through your bank account.</p>
       <button
-        onclick="startPayment()"
-        class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-5 rounded-lg shadow transition-all duration-300"
+        disabled
+        class="bg-red-500 text-white font-medium py-2 px-5 rounded-lg shadow cursor-not-allowed"
       >
-        🏦 Pay
+        🚫 Not Available
       </button>
     </div>
 
     <!-- E-Wallets -->
     <div
-      class="bg-white shadow-lg rounded-xl px-4 py-6 lg:p-6 text-center border-l-4 border-black transform transition-transform hover:scale-105 hover:shadow-xl"
+      class="bg-white shadow-lg rounded-xl px-4 py-6 lg:p-6 text-center border-l-4 border-green-500 transform transition-transform hover:scale-105 hover:shadow-xl"
     >
-      <h3 class="text-xl font-semibold text-teal-700 mb-2">📱 E-Wallets</h3>
+      <h3 class="text-xl font-semibold text-green-500 mb-2">📱 E-Wallets</h3>
       <p class="text-gray-600 mb-4">Use your favorite e-wallet service.</p>
       <button
         onclick="startPayment()"
-        class="text-white bg-gray-800 font-medium py-2 px-5 rounded-lg shadow transition-all duration-300 hover:bg-gray-900 hover:text-white"
+        class="text-white bg-green-400 font-medium py-2 px-5 rounded-lg shadow transition-all duration-300 hover:bg-green-500 hover:text-white"
       >
         📱 Pay
       </button>
@@ -44,16 +53,15 @@
         Pay with Visa, MasterCard or other cards.
       </p>
       <button
-        onclick="startPayment()"
-        class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-5 rounded-lg shadow transition-all duration-300"
+        class="bg-red-500 cursor-not-allowed text-white font-medium py-2 px-5 rounded-lg shadow"
       >
-        💳 Pay
+        🚫 Not Available
       </button>
     </div>
   </div>
 
   <!-- Payment Processing Overlay -->
-  <div
+  <!-- <div
     id="processing"
     class="fixed inset-0 bg-white bg-opacity-90 flex items-center justify-center hidden z-50"
   >
@@ -65,15 +73,12 @@
         Please wait while we complete the transaction.
       </p>
     </div>
-  </div>
+  </div> -->
 </div>
 
 <script>
   function startPayment() {
-    document.getElementById("processing").classList.remove("hidden");
-    setTimeout(() => {
-      window.location.href = "{% url 'payment_success' %}";
-    }, 3000);
+    window.location.href = "{% url 'ewallet_payment' %}";
   }
 </script>
 {% endblock %}

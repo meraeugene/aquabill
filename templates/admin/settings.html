@@ -1,0 +1,19 @@
+{% extends "base_admin.html" %} {% block content %}
+<div class="max-w-2xl mt-14 lg:mt-0">
+  <h2 class="text-3xl font-extrabold text-blue-900 mb-6">Account Settings</h2>
+
+  <div
+    class="bg-white shadow-lg rounded-lg p-6 border-l-4 border-blue-500 space-y-4"
+  >
+    <div>
+      <h3 class="text-gray-700 font-semibold">Username</h3>
+      <p class="text-lg text-blue-900">{{ user.username }}</p>
+    </div>
+
+    <div>
+      <h3 class="text-gray-700 font-semibold">Email</h3>
+      <p class="text-lg text-blue-900">{{ user.email }}</p>
+    </div>
+  </div>
+</div>
+{% endblock %}

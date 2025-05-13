@@ -1,9 +1,11 @@
-{% extends "base.html" %} {% block content %}
+{% extends "base.html" %}{% load humanize %} {% block content %}
 
-<div class="mt-14 lg:mt-0">
-  <h2 class="text-2xl font-bold text-blue-800 mb-6">Your Billing History</h2>
+<div class="mt-14 lg:mt-0 bg-blue-50 lg:p-8 p-6 min-h-screen">
+  <h2 class="text-2xl lg:text-3xl font-extrabold text-blue-900 mb-8">
+    Your Billing History
+  </h2>
 
-  <div class="overflow-x-auto bg-white shadow-lg rounded-lg">
+  <div class="overflow-x-auto bg-white rounded-lg border border-blue-200">
     <table class="min-w-full table-auto bg-white text-gray-800">
       <thead>
         <tr class="bg-blue-100 text-gray-700 whitespace-nowrap">
@@ -19,12 +21,15 @@
           class="border-b whitespace-nowrap border-gray-200 hover:bg-blue-50 transition-colors border-t border-blue-50"
         >
           <td class="px-6 py-3">{{ bill.period }}</td>
-          <td class="px-6 py-3">${{ bill.amount|floatformat:2 }}</td>
+          <td class="px-6 py-3 font-semibold">
+            ₱{{ bill.amount|floatformat:2|intcomma }}
+          </td>
           <td
-            class="px-6 uppercase text-sm py-3 {% if bill.status == 'unpaid' %}text-red-600{% else %}text-green-600{% endif %} font-medium"
+            class="px-6 uppercase text-sm py-3 {% if bill.status == 'unpaid' %}text-red-600 {% elif bill.status == 'pending' %}text-yellow-500 {% else %}text-green-600 {% endif %} font-medium"
           >
             {{ bill.status }}
           </td>
+
           <td class="px-6 py-3">{{ bill.due_date }}</td>
           <!-- Render due date here -->
         </tr>

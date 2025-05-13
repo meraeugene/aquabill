@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 import os
 import environ
+env = environ.Env()
+import cloudinary
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -52,6 +54,9 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'pwa',
+    'cloudinary',
+    'cloudinary_storage',
+    'django.contrib.humanize'
  ]
 
 MIDDLEWARE = [
@@ -70,6 +75,25 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
+# reading .env file, if it exists
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+
+# CLOUDINARY
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': env('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': env('CLOUDINARY_API_KEY'),
+    'API_SECRET': env('CLOUDINARY_API_SECRET'),
+}
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+cloudinary.config( 
+  cloud_name = env('CLOUDINARY_CLOUD_NAME'), 
+  api_key = env('CLOUDINARY_API_KEY'), 
+  api_secret = env('CLOUDINARY_API_SECRET'),
+  secure = True
+)
 
 SITE_ID = 1
 ACCOUNT_LOGIN_METHODS = {"email"} 
@@ -78,9 +102,7 @@ ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 LOGIN_REDIRECT_URL = '/dashboard/'
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 
-env = environ.Env()
-# reading .env file, if it exists
-environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+# SMTP
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = env('EMAIL_HOST', default='smtp.gmail.com')  # Default is Gmail
