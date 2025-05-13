@@ -1,0 +1,50 @@
+{% extends "base_admin.html" %} {% load humanize %} {% block content %}
+
+<div class="mt-14 lg:mt-0 bg-blue-50 lg:p-8 p-6 min-h-screen">
+  <h2 class="text-2xl lg:text-3xl font-extrabold text-blue-900 mb-8">
+    Paid Consumers
+  </h2>
+
+  <div class="overflow-x-auto bg-white rounded-lg border border-blue-200">
+    <table class="min-w-full table-auto bg-white text-gray-800">
+      <thead>
+        <tr class="bg-blue-100 text-gray-700 whitespace-nowrap">
+          <th class="px-6 py-3 text-left font-medium">Name</th>
+          <th class="px-6 py-3 text-left font-medium">Email Address</th>
+          <th class="px-6 py-3 text-left font-medium">Billing Period</th>
+          <th class="px-6 py-3 text-left font-medium">Amount</th>
+          <th class="px-6 py-3 text-left font-medium">Consumption (m³)</th>
+          <th class="px-6 py-3 text-left font-medium">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for bill in paid_bills %}
+        <tr
+          class="border-b whitespace-nowrap border-gray-200 hover:bg-blue-50 transition-colors border-t border-blue-50"
+        >
+          <td class="px-6 py-3">
+            {{ bill.user.first_name }} {{ bill.user.last_name }}
+          </td>
+          <td class="px-6 py-3">{{ bill.user.email }}</td>
+          <td class="px-6 py-3">{{ bill.period }}</td>
+          <td class="px-6 py-3 font-semibold">
+            ₱{{ bill.amount|floatformat:2|intcomma }}
+          </td>
+          <td class="px-6 py-3">{{ bill.consumption_m3 }} L</td>
+          <td class="px-6 py-3 uppercase text-sm font-medium text-green-600">
+            {{ bill.status }}
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="6" class="px-6 py-3 text-center text-gray-500">
+            No paid bills found.
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock %}

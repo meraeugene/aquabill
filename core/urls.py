@@ -15,6 +15,7 @@ urlpatterns = [
     
     # Add path for admin dashboard
     path('admin/dashboard/', views_admin.admin_dashboard, name='admin_dashboard'),  
+    path('admin/paid-consumers/', views_admin.paid_consumers, name='paid_consumers'),
     path('admin/billing_management/', views_admin.input_water_reading, name='billing_management'),  
     path('admin/verify_payments/', views_admin.verify_payments, name='verify_payments'),  
     path('admin/settings/', views_admin.admin_settings, name='admin_settings'),  

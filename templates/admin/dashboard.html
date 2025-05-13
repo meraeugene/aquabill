@@ -8,7 +8,7 @@
       Admin Dashboard
     </h1>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
       <!-- Total Users -->
       <div class="bg-white shadow-lg rounded-lg p-6 border-t-4 border-blue-400">
         <h3 class="text-lg font-semibold text-blue-800 mb-2">Total Users</h3>
@@ -47,6 +47,92 @@
         </p>
       </div>
     </div>
+
+    <div class="flex mt-10 lg:flex-row flex-col justify-between gap-8">
+      <!-- Monthly Revenue Chart -->
+      <div
+        class="w-full bg-white rounded-lg p-6 border-l-4 border-green-400 shadow-lg"
+      >
+        <h3 class="text-xl font-semibold text-green-800 mb-4 text-center">
+          Monthly Revenue
+        </h3>
+        <canvas id="revenueChart" height="300"></canvas>
+      </div>
+
+      <!-- Monthly Consumption Chart -->
+      <div
+        class="w-full bg-white rounded-lg p-6 border-l-4 border-blue-400 shadow-lg"
+      >
+        <h3 class="text-xl font-semibold text-blue-800 mb-4 text-center">
+          Monthly Water Consumption
+        </h3>
+        <canvas id="consumptionChart" height="300"></canvas>
+      </div>
+    </div>
+
+    <!-- Chart.js Script -->
+    <script>
+      const revenueLabels = JSON.parse("{{ revenue_labels_json|escapejs }}");
+      const revenueValues = JSON.parse("{{ revenue_values_json|escapejs }}");
+      const consumptionLabels = JSON.parse(
+        "{{ consumption_labels_json|escapejs }}"
+      );
+      const consumptionValues = JSON.parse(
+        "{{ consumption_values_json|escapejs }}"
+      );
+
+      // Revenue Chart
+      new Chart(document.getElementById("revenueChart"), {
+        type: "bar",
+        data: {
+          labels: revenueLabels,
+          datasets: [
+            {
+              label: "Revenue (₱)",
+              data: revenueValues,
+              backgroundColor: "rgba(34, 197, 94, 0.6)",
+              borderColor: "rgba(34, 197, 94, 1)",
+              borderWidth: 1,
+              borderRadius: 4,
+            },
+          ],
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: { stepSize: 1000 },
+            },
+          },
+        },
+      });
+
+      // Consumption Chart
+      new Chart(document.getElementById("consumptionChart"), {
+        type: "bar",
+        data: {
+          labels: consumptionLabels,
+          datasets: [
+            {
+              label: "Water Used (Liters)",
+              data: consumptionValues,
+              fill: true,
+              backgroundColor: "rgba(59, 130, 246, 0.2)",
+              borderColor: "rgba(59, 130, 246, 1)",
+              tension: 0.4,
+            },
+          ],
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: { stepSize: 100 },
+            },
+          },
+        },
+      });
+    </script>
   </div>
 </div>
 

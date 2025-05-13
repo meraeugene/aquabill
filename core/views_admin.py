@@ -3,6 +3,9 @@ from django.shortcuts import render, redirect
 from .models import User, Bill, WaterUsage, Payment
 from datetime import datetime, timedelta
 from django.contrib import messages
+from django.db.models.functions import TruncMonth
+from django.db.models import Sum
+import json
 
 # ADMIN SIDE
 @login_required
@@ -15,6 +18,7 @@ def admin_settings(request):
     })
 
 
+
 @login_required
 def admin_dashboard(request):
     if not request.user.is_superuser:
@@ -25,15 +29,51 @@ def admin_dashboard(request):
     pending_bills = Bill.objects.filter(status='pending')
     total_consumption = sum(u.consumption_liters for u in WaterUsage.objects.all())
 
+    # Monthly Revenue (assuming Bill.created_at exists)
+    monthly_revenue = (
+        Bill.objects.filter(status='paid')
+        .annotate(month=TruncMonth('created_at'))  # keep if Bill has created_at
+        .values('month')
+        .annotate(total=Sum('amount'))
+        .order_by('month')
+    )
+    revenue_labels = [item['month'].strftime('%B') for item in monthly_revenue]
+    revenue_values = [float(item['total']) for item in monthly_revenue]
+
+    # Monthly Consumption (use WaterUsage.date)
+    monthly_consumption = (
+        WaterUsage.objects
+        .annotate(month=TruncMonth('date'))  # fixed here
+        .values('month')
+        .annotate(total=Sum('consumption_liters'))
+        .order_by('month')
+    )
+    consumption_labels = [item['month'].strftime('%B') for item in monthly_consumption]
+    consumption_values = [float(item['total']) for item in monthly_consumption]
+
     context = {
         'total_users': total_users,
         'total_revenue': total_revenue,
         'pending_bills': pending_bills,
         'total_consumption': total_consumption,
+        'revenue_labels_json': json.dumps(revenue_labels),
+        'revenue_values_json': json.dumps(revenue_values),
+        'consumption_labels_json': json.dumps(consumption_labels),
+        'consumption_values_json': json.dumps(consumption_values),
     }
 
-    print(context)
     return render(request, 'admin/dashboard.html', context)
+
+@login_required
+def paid_consumers(request):
+    if not request.user.is_superuser:
+        return redirect('dashboard')
+
+    paid_bills = Bill.objects.filter(status='paid').select_related('user')
+
+    return render(request, 'admin/paid_consumers.html', {
+        'paid_bills': paid_bills
+    })
 
 @login_required
 def input_water_reading(request):
