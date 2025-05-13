@@ -28,7 +28,7 @@
   }
 </style>
 
-<div class="w-full flex flex-col items-center gap-1">
+<div class="w-full flex flex-col items-center lg:gap-2">
   <img
     src="https://res.cloudinary.com/dupynxkci/image/upload/v1747063577/aquabill/huwpsbwjyabjysylumcg.png"
     alt="Logo"
@@ -36,12 +36,15 @@
   />
 
   <div
-    class="mx-auto py-8 px-12 rounded-lg bg-blue-900 text-white shadow-lg"
-    style="width: 25%"
+    class="mx-auto w-full lg:w-1/4 py-8 px-6 lg:px-10 rounded-lg bg-blue-900 text-white shadow-lg"
   >
     <div class="mb-8 space-y-2">
-      <h2 class="text-3xl font-bold text-center">Sign in to Aquabill</h2>
-      <p class="text-center">Stay connected with your water usage and bills.</p>
+      <h2 class="lg:text-3xl text-2xl font-bold text-center">
+        Sign in to Aquabill
+      </h2>
+      <p class="text-center text-sm lg:text-base">
+        Monitor your water and billing in one place.
+      </p>
     </div>
 
     <!-- Display any error or info messages here -->
@@ -116,7 +119,7 @@
   form.addEventListener("submit", function () {
     loginBtn.classList.add("loading");
     loginBtn.querySelector(".wave").classList.remove("hidden");
-    buttonText.textContent = "Signing in..."; // Change button text to "Signing in..."
+    buttonText.textContent = "Signing in...";
   });
 </script>
 

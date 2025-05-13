@@ -3,6 +3,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Aquabill | Water Billing System</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link
@@ -35,7 +36,9 @@
     </style>
   </head>
   <body class="flex text-gray-800 custom-bg h-auto">
-    <main class="flex-1 flex items-center justify-center p-8 pb-20">
+    <main
+      class="flex-1 flex items-center justify-center p-6 lg:p-8 pt-8 pb-16 lg:pb-16"
+    >
       {% block content %} {% endblock %}
     </main>
   </body>

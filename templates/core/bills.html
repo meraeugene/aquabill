@@ -1,39 +1,43 @@
 {% extends "base.html" %} {% block content %}
-<h2 class="text-2xl font-semibold text-blue-800 mb-6">Your Billing History</h2>
 
-<div class="overflow-x-auto bg-white shadow-lg rounded-lg">
-  <table class="min-w-full table-auto bg-white text-gray-800">
-    <thead>
-      <tr class="bg-blue-100 text-gray-700">
-        <th class="px-6 py-3 text-left font-medium">Period</th>
-        <th class="px-6 py-3 text-left font-medium">Amount</th>
-        <th class="px-6 py-3 text-left font-medium">Status</th>
-        <th class="px-6 py-3 text-left font-medium">Due Date</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for bill in bills %}
-      <tr
-        class="border-b border-gray-200 hover:bg-blue-50 transition-colors border-t border-blue-50"
-      >
-        <td class="px-6 py-3">{{ bill.period }}</td>
-        <td class="px-6 py-3">${{ bill.amount|floatformat:2 }}</td>
-        <td
-          class="px-6 uppercase text-sm py-3 {% if bill.status == 'unpaid' %}text-red-600{% else %}text-green-600{% endif %} font-medium"
+<div class="mt-14 lg:mt-0">
+  <h2 class="text-2xl font-bold text-blue-800 mb-6">Your Billing History</h2>
+
+  <div class="overflow-x-auto bg-white shadow-lg rounded-lg">
+    <table class="min-w-full table-auto bg-white text-gray-800">
+      <thead>
+        <tr class="bg-blue-100 text-gray-700 whitespace-nowrap">
+          <th class="px-6 py-3 text-left font-medium">Period</th>
+          <th class="px-6 py-3 text-left font-medium">Amount</th>
+          <th class="px-6 py-3 text-left font-medium">Status</th>
+          <th class="px-6 py-3 text-left font-medium">Due Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for bill in bills %}
+        <tr
+          class="border-b whitespace-nowrap border-gray-200 hover:bg-blue-50 transition-colors border-t border-blue-50"
         >
-          {{ bill.status }}
-        </td>
-        <td class="px-6 py-3">{{ bill.due_date }}</td>
-        <!-- Render due date here -->
-      </tr>
-      {% empty %}
-      <tr>
-        <td colspan="4" class="px-6 py-3 text-center text-gray-500">
-          No billing history available.
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+          <td class="px-6 py-3">{{ bill.period }}</td>
+          <td class="px-6 py-3">${{ bill.amount|floatformat:2 }}</td>
+          <td
+            class="px-6 uppercase text-sm py-3 {% if bill.status == 'unpaid' %}text-red-600{% else %}text-green-600{% endif %} font-medium"
+          >
+            {{ bill.status }}
+          </td>
+          <td class="px-6 py-3">{{ bill.due_date }}</td>
+          <!-- Render due date here -->
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="4" class="px-6 py-3 text-center text-gray-500">
+            No billing history available.
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 </div>
+
 {% endblock %}

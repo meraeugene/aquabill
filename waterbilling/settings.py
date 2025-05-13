@@ -158,21 +158,21 @@ PWA_APP_START_URL = '/'
 PWA_APP_STATUS_BAR_COLOR = 'default'
 PWA_APP_ICONS = [
     {
-        'src': '/static/icons/pwa-logo.png',
+        'src': 'https://res.cloudinary.com/dupynxkci/image/upload/v1747064466/aquabill/tdn7koyavgmsh5ujz4dt.png',
         'sizes': '192x192'
     },
     {
-        'src': '/static/icons/pwa-logo.png',
+        'src': 'https://res.cloudinary.com/dupynxkci/image/upload/v1747064466/aquabill/tdn7koyavgmsh5ujz4dt.png',
         'sizes': '512x512'
     }
 ]
 PWA_APP_ICONS_APPLE = [
     {
-        'src': '/static/icons/pwa-logo.png',
+        'src': 'https://res.cloudinary.com/dupynxkci/image/upload/v1747064466/aquabill/tdn7koyavgmsh5ujz4dt.png',
         'sizes': '192x192'
     },
     {
-        'src': '/static/icons/pwa-logo.png',
+        'src': 'https://res.cloudinary.com/dupynxkci/image/upload/v1747064466/aquabill/tdn7koyavgmsh5ujz4dt.png',
         'sizes': '512x512'
     }
 ]

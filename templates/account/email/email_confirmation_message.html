@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Confirm Your Email</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f6f8;
+        padding: 20px;
+        color: #333;
+      }
+      .container {
+        max-width: 600px;
+        margin: auto;
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+      }
+      h1 {
+        text-align: center;
+        font-size: 32px;
+        color: #2563eb;
+      }
+      .btn {
+        display: inline-block;
+        padding: 12px 20px;
+        margin-top: 20px;
+        background-color: #2563eb;
+        color: white !important;
+        text-decoration: none;
+        border-radius: 5px;
+      }
+      .footer {
+        margin-top: 30px;
+        font-size: 12px;
+        color: #888;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- 🖼️ LOGO REPLACED WITH H1 -->
+      <h1>Aquabill</h1>
+
+      <h2>Welcome to Aquabill, {{ user.username }}!</h2>
+      <p>
+        Thanks for signing up. Please confirm your email by clicking the button
+        below:
+      </p>
+      <a href="{{ activate_url }}" class="btn">Confirm Email</a>
+
+      <p>
+        If you didn’t create an account, you can safely ignore this message.
+      </p>
+
+      <div class="footer">
+        &copy; {% now "Y" %} Aquabill. All rights reserved.
+      </div>
+    </div>
+  </body>
+</html>
