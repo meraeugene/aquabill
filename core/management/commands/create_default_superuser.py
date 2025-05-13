@@ -6,7 +6,9 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         if not User.objects.filter(username='admin').exists():
-            User.objects.create_superuser('admin', 'admin@gmail.com', 'aquabill123')
-            self.stdout.write(self.style.SUCCESS('Default superuser created.'))
+            user = User.objects.create_superuser('admin', 'admin@gmail.com', 'aquabill123')
+            user.is_active = True  # Mark user as active (verified)
+            user.save()
+            self.stdout.write(self.style.SUCCESS('Default superuser created and verified.'))
         else:
             self.stdout.write('Superuser already exists.')
