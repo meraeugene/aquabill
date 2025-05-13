@@ -9,7 +9,9 @@ urlpatterns = [
     path('usage/', views.usage, name='usage'),
     path('payments/', views.payments, name='payments'),
     path('payment-method-selection/', views.payment_method_selection,name='payment_method_selection'),
-    path('settings/', views.settings_view, name='settings'),
     path('payment-success/', views.payment_success, name='payment_success'),
+    path('receipt/download/', views.download_receipt, name='download_receipt'),
+    path('receipt/email/', views.email_receipt, name='email_receipt'),
+    path('settings/', views.settings_view, name='settings'),
     path('logout/', views.custom_logout, name='logout'),
 ]

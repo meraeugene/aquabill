@@ -7,6 +7,11 @@ from allauth.account.models import EmailAddress
 from core.forms import CustomSignupForm  
 from allauth.account.utils import send_email_confirmation
 from .models import Profile, Bill
+from django.http import HttpResponse
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
 import random
 import json
 
@@ -171,6 +176,53 @@ def payment_success(request):
     return render(request, 'core/payment_success.html', {
         'total_bill': total_bill
     })
+
+def download_receipt(request):
+    total_bill = request.session.get('total_bill')
+    due_date = request.session.get('due_date')
+
+    if not total_bill or not due_date:
+        return redirect('dashboard')
+
+    template_path = 'core/receipt_template.html'
+    context = {
+        'user': request.user,
+        'total_bill': total_bill,
+        'due_date': due_date
+    }
+
+    template = get_template(template_path)
+    html = template.render(context)
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="receipt.pdf"'
+
+    pisa_status = pisa.CreatePDF(html, dest=response)
+    if pisa_status.err:
+        return HttpResponse('Error generating PDF receipt')
+    return response
+
+@login_required
+def email_receipt(request):
+    total_bill = request.session.get('total_bill')
+    due_date = request.session.get('due_date')
+
+    if not total_bill or not due_date:
+        return redirect('dashboard')
+
+    subject = 'Your Aquabill Payment Receipt'
+    message = render_to_string('core/receipt_template.html', {
+        'user': request.user,
+        'total_bill': total_bill,
+        'due_date': due_date
+    })
+
+    email = EmailMessage(subject, message, to=[request.user.email])
+    email.content_subtype = 'html'
+    email.send()
+
+    messages.success(request, "✅ Receipt emailed successfully.")
+    return redirect('payment_success')
 
 @login_required
 def settings_view(request):
