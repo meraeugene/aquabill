@@ -39,17 +39,19 @@ def login_view(request):
 
         if user is not None:
             email_address = EmailAddress.objects.filter(user=user, email=user.email).first()
-            if email_address and email_address.verified:
-                login(request, user)
-                
-                if user.is_superuser:
-                    return redirect('admin_dashboard') 
-                else:
-                    return redirect('dashboard') 
 
+            # Check if the user is admin
+            if user.is_superuser:
+                login(request, user)
+                return redirect('admin_dashboard')  # Redirect to admin dashboard
+            # If the user is not admin, check email verification
+            elif email_address and email_address.verified:
+                login(request, user)
+                return redirect('dashboard')  # Redirect to user dashboard
             else:
                 messages.error(request, "Please verify your email before logging in.")
                 return redirect('account_login')
+
         else:
             messages.error(request, "Invalid email or password.")
             return redirect('account_login')
