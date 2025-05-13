@@ -28,12 +28,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure--orp6(7_$gwzsdh^q9x!75v*_i-wz_aw$8b8zsb(=)r4)g^n2u'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-# DEBUG = False
+# DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1']
-# ALLOWED_HOSTS = ['aquabill-ph.onrender.com']
-# CSRF_TRUSTED_ORIGINS = ['https://aquabill-ph.onrender.com'] 
+# ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['aquabill-ph.onrender.com']
+CSRF_TRUSTED_ORIGINS = ['https://aquabill-ph.onrender.com'] 
 
 
 # Application definition
